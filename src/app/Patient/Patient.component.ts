@@ -33,6 +33,7 @@ export class PatientComponent implements OnInit {
   private errorMessage;
   private hospital;
   private hospitalId;
+  private isPatient;
 
 
   patientId = new FormControl('', Validators.required);
@@ -59,6 +60,8 @@ export class PatientComponent implements OnInit {
     fb: FormBuilder, private ar: ActivatedRoute) {
     this.ar.params.subscribe((params: Params) => {
       this.hospitalId = params['hospitalId'];
+      this.patientId = params['patientId'];
+      this.isPatient = this.patientId ? true : false;
     });
     this.myForm = fb.group({
       patientId: this.patientId,
@@ -69,7 +72,11 @@ export class PatientComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadAll();
+    if (this.isPatient) {
+      this.getForm(this.patientId);
+    } else {
+      this.loadAll();
+    }
   }
 
   loadAll(): void {
