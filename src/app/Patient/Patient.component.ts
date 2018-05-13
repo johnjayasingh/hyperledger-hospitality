@@ -162,7 +162,7 @@ export class PatientComponent implements OnInit {
     this.participant = {
       $class: 'org.hospitality.Patient',
       'patientId': form.value.patientId,
-      'fullName': form.value.fullName
+      'fullName': form.value.fullName,
       'age': form.value.age,
       'bloodGroup': form.value.bloodGroup,
     };
