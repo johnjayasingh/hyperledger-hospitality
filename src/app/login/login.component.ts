@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.patientDataService.getAll('Patient').toPromise().then((patients) => {
       const patient = patients.filter((patient) => patient.patientId === form.value.username)[0];
       if (patient) {
-        this.router.navigate(['Patient'], { queryParams: { patientId: form.value.username } });
+        this.router.navigate([`Patient/${form.value.username}`]);
       } else {
         this.nouserfound = true;
       }
