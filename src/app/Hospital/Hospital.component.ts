@@ -17,9 +17,9 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { HospitalService } from './Hospital.service';
 import 'rxjs/add/operator/toPromise';
 @Component({
-	selector: 'app-Hospital',
-	templateUrl: './Hospital.component.html',
-	styleUrls: ['./Hospital.component.css'],
+  selector: 'app-Hospital',
+  templateUrl: './Hospital.component.html',
+  styleUrls: ['./Hospital.component.css'],
   providers: []
 })
 export class HospitalComponent implements OnInit {
@@ -29,46 +29,46 @@ export class HospitalComponent implements OnInit {
   private allParticipants;
   private participant;
   private currentId;
-	private errorMessage;
-
-  
-      
-          hospitalId = new FormControl("", Validators.required);
-        
-  
-      
-          name = new FormControl("", Validators.required);
-        
-  
-      
-          address = new FormControl("", Validators.required);
-        
-  
-      
-          patients = new FormControl("", Validators.required);
-        
-  
+  private errorMessage;
 
 
-  constructor(private serviceHospital:HospitalService, fb: FormBuilder) {
+
+  hospitalId = new FormControl("", Validators.required);
+
+
+
+  name = new FormControl("", Validators.required);
+
+
+
+  address = new FormControl("", Validators.required);
+
+
+
+  patients = new FormControl("", Validators.required);
+
+
+
+
+  constructor(private serviceHospital: HospitalService, fb: FormBuilder) {
     this.myForm = fb.group({
-    
-        
-          hospitalId:this.hospitalId,
-        
-    
-        
-          name:this.name,
-        
-    
-        
-          address:this.address,
-        
-    
-        
-          patients:this.patients
-        
-    
+
+
+      hospitalId: this.hospitalId,
+
+
+
+      name: this.name,
+
+
+
+      address: this.address,
+
+
+
+      patients: this.patients
+
+
     });
   };
 
@@ -79,25 +79,26 @@ export class HospitalComponent implements OnInit {
   loadAll(): Promise<any> {
     let tempList = [];
     return this.serviceHospital.getAll()
-    .toPromise()
-    .then((result) => {
-			this.errorMessage = null;
-      result.forEach(participant => {
-        tempList.push(participant);
+      .toPromise()
+      .then((result) => {
+        this.errorMessage = null;
+        result.forEach((participant: any) => {
+          participant.link = '/Hospital/' + participant.hospitalId;
+          tempList.push(participant);
+        });
+        this.allParticipants = tempList;
+      })
+      .catch((error) => {
+        if (error == 'Server error') {
+          this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        }
+        else if (error == '404 - Not Found') {
+          this.errorMessage = "404 - Could not find API route. Please check your available APIs."
+        }
+        else {
+          this.errorMessage = error;
+        }
       });
-      this.allParticipants = tempList;
-    })
-    .catch((error) => {
-        if(error == 'Server error'){
-            this.errorMessage = "Could not connect to REST server. Please check your configuration details";
-        }
-        else if(error == '404 - Not Found'){
-				this.errorMessage = "404 - Could not find API route. Please check your available APIs."
-        }
-        else{
-            this.errorMessage = error;
-        }
-    });
   }
 
 	/**
@@ -128,250 +129,250 @@ export class HospitalComponent implements OnInit {
   addParticipant(form: any): Promise<any> {
     this.participant = {
       $class: "org.hospitality.Hospital",
-      
-        
-          "hospitalId":this.hospitalId.value,
-        
-      
-        
-          "name":this.name.value,
-        
-      
-        
-          "address":this.address.value,
-        
-      
-        
-          "patients":this.patients.value
-        
-      
+
+
+      "hospitalId": this.hospitalId.value,
+
+
+
+      "name": this.name.value,
+
+
+
+      "address": this.address.value,
+
+
+
+      "patients": this.patients.value
+
+
     };
 
     this.myForm.setValue({
-      
-        
-          "hospitalId":null,
-        
-      
-        
-          "name":null,
-        
-      
-        
-          "address":null,
-        
-      
-        
-          "patients":null
-        
-      
+
+
+      "hospitalId": null,
+
+
+
+      "name": null,
+
+
+
+      "address": null,
+
+
+
+      "patients": null
+
+
     });
 
     return this.serviceHospital.addParticipant(this.participant)
-    .toPromise()
-    .then(() => {
-			this.errorMessage = null;
-      this.myForm.setValue({
-      
-        
-          "hospitalId":null,
-        
-      
-        
-          "name":null,
-        
-      
-        
-          "address":null,
-        
-      
-        
-          "patients":null 
-        
-      
+      .toPromise()
+      .then(() => {
+        this.errorMessage = null;
+        this.myForm.setValue({
+
+
+          "hospitalId": null,
+
+
+
+          "name": null,
+
+
+
+          "address": null,
+
+
+
+          "patients": null
+
+
+        });
+      })
+      .catch((error) => {
+        if (error == 'Server error') {
+          this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        }
+        else {
+          this.errorMessage = error;
+        }
       });
-    })
-    .catch((error) => {
-        if(error == 'Server error'){
-            this.errorMessage = "Could not connect to REST server. Please check your configuration details";
-        }
-        else{
-            this.errorMessage = error;
-        }
-    });
   }
 
 
-   updateParticipant(form: any): Promise<any> {
+  updateParticipant(form: any): Promise<any> {
     this.participant = {
       $class: "org.hospitality.Hospital",
-      
-        
-          
-        
-    
-        
-          
-            "name":this.name.value,
-          
-        
-    
-        
-          
-            "address":this.address.value,
-          
-        
-    
-        
-          
-            "patients":this.patients.value
-          
-        
-    
+
+
+
+
+
+
+
+      "name": this.name.value,
+
+
+
+
+
+      "address": this.address.value,
+
+
+
+
+
+      "patients": this.patients.value
+
+
+
     };
 
-    return this.serviceHospital.updateParticipant(form.get("hospitalId").value,this.participant)
-		.toPromise()
-		.then(() => {
-			this.errorMessage = null;
-		})
-		.catch((error) => {
-            if(error == 'Server error'){
-				this.errorMessage = "Could not connect to REST server. Please check your configuration details";
-			}
-            else if(error == '404 - Not Found'){
-				this.errorMessage = "404 - Could not find API route. Please check your available APIs."
-			}
-			else{
-				this.errorMessage = error;
-			}
-    });
+    return this.serviceHospital.updateParticipant(form.get("hospitalId").value, this.participant)
+      .toPromise()
+      .then(() => {
+        this.errorMessage = null;
+      })
+      .catch((error) => {
+        if (error == 'Server error') {
+          this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        }
+        else if (error == '404 - Not Found') {
+          this.errorMessage = "404 - Could not find API route. Please check your available APIs."
+        }
+        else {
+          this.errorMessage = error;
+        }
+      });
   }
 
 
   deleteParticipant(): Promise<any> {
 
     return this.serviceHospital.deleteParticipant(this.currentId)
-		.toPromise()
-		.then(() => {
-			this.errorMessage = null;
-		})
-		.catch((error) => {
-            if(error == 'Server error'){
-				this.errorMessage = "Could not connect to REST server. Please check your configuration details";
-			}
-			else if(error == '404 - Not Found'){
-				this.errorMessage = "404 - Could not find API route. Please check your available APIs."
-			}
-			else{
-				this.errorMessage = error;
-			}
-    });
+      .toPromise()
+      .then(() => {
+        this.errorMessage = null;
+      })
+      .catch((error) => {
+        if (error == 'Server error') {
+          this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        }
+        else if (error == '404 - Not Found') {
+          this.errorMessage = "404 - Could not find API route. Please check your available APIs."
+        }
+        else {
+          this.errorMessage = error;
+        }
+      });
   }
 
-  setId(id: any): void{
+  setId(id: any): void {
     this.currentId = id;
   }
 
-  getForm(id: any): Promise<any>{
+  getForm(id: any): Promise<any> {
 
     return this.serviceHospital.getparticipant(id)
-    .toPromise()
-    .then((result) => {
-			this.errorMessage = null;
-      let formObject = {
-        
-          
-            "hospitalId":null,
-          
-        
-          
-            "name":null,
-          
-        
-          
-            "address":null,
-          
-        
-          
-            "patients":null 
-          
-        
-      };
+      .toPromise()
+      .then((result) => {
+        this.errorMessage = null;
+        let formObject = {
+
+
+          "hospitalId": null,
 
 
 
-      
-        if(result.hospitalId){
-          
-            formObject.hospitalId = result.hospitalId;
-          
-        }else{
+          "name": null,
+
+
+
+          "address": null,
+
+
+
+          "patients": null
+
+
+        };
+
+
+
+
+        if (result.hospitalId) {
+
+          formObject.hospitalId = result.hospitalId;
+
+        } else {
           formObject.hospitalId = null;
         }
-      
-        if(result.name){
-          
-            formObject.name = result.name;
-          
-        }else{
+
+        if (result.name) {
+
+          formObject.name = result.name;
+
+        } else {
           formObject.name = null;
         }
-      
-        if(result.address){
-          
-            formObject.address = result.address;
-          
-        }else{
+
+        if (result.address) {
+
+          formObject.address = result.address;
+
+        } else {
           formObject.address = null;
         }
-      
-        if(result.patients){
-          
-            formObject.patients = result.patients;
-          
-        }else{
+
+        if (result.patients) {
+
+          formObject.patients = result.patients;
+
+        } else {
           formObject.patients = null;
         }
-      
 
-      this.myForm.setValue(formObject);
 
-    })
-    .catch((error) => {
-        if(error == 'Server error'){
-            this.errorMessage = "Could not connect to REST server. Please check your configuration details";
+        this.myForm.setValue(formObject);
+
+      })
+      .catch((error) => {
+        if (error == 'Server error') {
+          this.errorMessage = "Could not connect to REST server. Please check your configuration details";
         }
-        else if(error == '404 - Not Found'){
-				this.errorMessage = "404 - Could not find API route. Please check your available APIs."
+        else if (error == '404 - Not Found') {
+          this.errorMessage = "404 - Could not find API route. Please check your available APIs."
         }
-        else{
-            this.errorMessage = error;
+        else {
+          this.errorMessage = error;
         }
-    });
+      });
 
   }
 
-  resetForm(): void{
+  resetForm(): void {
     this.myForm.setValue({
-      
-        
-          "hospitalId":null,
-        
-      
-        
-          "name":null,
-        
-      
-        
-          "address":null,
-        
-      
-        
-          "patients":null 
-        
-      
-      });
+
+
+      "hospitalId": null,
+
+
+
+      "name": null,
+
+
+
+      "address": null,
+
+
+
+      "patients": null
+
+
+    });
   }
 
 }
