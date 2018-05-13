@@ -181,6 +181,7 @@ export class PatientComponent implements OnInit {
         this.updateHospital()
           .then((response) => {
             this.errorMessage = null;
+            document.location.reload();
             this.myForm.setValue({
               'patientId': null,
               'fullName': null,
