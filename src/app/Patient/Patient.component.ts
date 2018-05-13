@@ -161,10 +161,10 @@ export class PatientComponent implements OnInit {
   addParticipant(form: any): Promise<any> {
     this.participant = {
       $class: 'org.hospitality.Patient',
-      'patientId': this.patientId.value,
-      'fullName': this.fullName.value,
-      'age': this.age.value,
-      'bloodGroup': this.bloodGroup.value,
+      'patientId': form.value.patientId,
+      'fullName': form.value.fullName
+      'age': form.value.age,
+      'bloodGroup': form.value.bloodGroup,
     };
 
     this.myForm.setValue({

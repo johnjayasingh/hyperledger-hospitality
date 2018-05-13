@@ -13,6 +13,6 @@ app.use(express.static('dist'))
 app.use(fallback(__dirname + '/dist/index.html'));
 
 //Server Starts
-app.listen(80, '0.0.0.0', () => {
+app.listen(4200, '0.0.0.0', () => {
     console.log("Server Started");
 });
