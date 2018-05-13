@@ -72,7 +72,7 @@ export class RegisterHospitalComponent implements OnInit {
     return this.serviceHospital.addParticipant(this.participant)
       .toPromise()
       .then((response) => {
-        location.href = '';
+        document.location.href = '';
         this.errorMessage = null;
         console.log(response);
       })
